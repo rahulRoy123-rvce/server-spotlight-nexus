@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import ServerCard from '@/components/ServerCard';
@@ -10,7 +9,6 @@ import NoResults from '@/components/NoResults';
 import { categories } from '@/data/mockData';
 import { useServers } from '@/hooks/useServers';
 import { getAllTags } from '@/data/mockData';
-import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
 const Index = () => {
@@ -51,13 +49,6 @@ const Index = () => {
       <div className="flex flex-col items-center justify-center h-screen">
         <h2 className="text-xl font-bold text-red-500">Error loading servers</h2>
         <p className="text-gray-600">Please try again later</p>
-        {user && (
-          <Link to="/admin">
-            <Button className="mt-4 bg-mcp-purple hover:bg-mcp-purple/90">
-              Go to Admin
-            </Button>
-          </Link>
-        )}
       </div>
     );
   }
@@ -80,13 +71,6 @@ const Index = () => {
                 {categories.find(c => c.id === selectedCategory)?.name || 'All Servers'}
               </h2>
               <div className="flex items-center gap-2">
-                {user && (
-                  <Link to="/admin">
-                    <Button variant="outline" size="sm">
-                      Admin
-                    </Button>
-                  </Link>
-                )}
                 <MobileFilters 
                   categories={categories}
                   selectedCategory={selectedCategory}
@@ -105,13 +89,6 @@ const Index = () => {
               <div className="text-center py-10">
                 <h3 className="text-lg font-medium">No Servers Found</h3>
                 <p className="text-gray-500 mt-2">It looks like your Firestore database is empty.</p>
-                {user && (
-                  <Link to="/admin">
-                    <Button className="mt-4 bg-mcp-purple hover:bg-mcp-purple/90">
-                      Go to Admin page to seed data
-                    </Button>
-                  </Link>
-                )}
               </div>
             )}
             
