@@ -9,7 +9,114 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          count: number | null
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          count?: number | null
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          count?: number | null
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      server_tags: {
+        Row: {
+          id: string
+          server_id: string
+          tag_id: string
+        }
+        Insert: {
+          id?: string
+          server_id: string
+          tag_id: string
+        }
+        Update: {
+          id?: string
+          server_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "server_tags_server_id_fkey"
+            columns: ["server_id"]
+            isOneToOne: false
+            referencedRelation: "servers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "server_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      servers: {
+        Row: {
+          created_at: string | null
+          description: string
+          featured: boolean | null
+          id: string
+          image_url: string | null
+          name: string
+          owner: string
+          stars: number | null
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          name: string
+          owner: string
+          stars?: number | null
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          owner?: string
+          stars?: number | null
+          url?: string
+        }
+        Relationships: []
+      }
+      tags: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -6,17 +6,18 @@ import ServerCard from '@/components/ServerCard';
 import TagFilter from '@/components/TagFilter';
 import MobileFilters from '@/components/MobileFilters';
 import NoResults from '@/components/NoResults';
-import { categories } from '@/data/mockData';
 import { useServers } from '@/hooks/useServers';
-import { getAllTags } from '@/data/mockData';
+import { useCategories } from '@/hooks/useCategories';
+import { useTags } from '@/hooks/useTags';
 import { useAuth } from '@/context/AuthContext';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('featured');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const { data: servers = [], isLoading, error } = useServers(selectedCategory, selectedTags);
-  const tags = getAllTags();
+  const { data: servers = [], isLoading: isLoadingServers, error: serversError } = useServers(selectedCategory, selectedTags);
+  const { data: categories = [], isLoading: isLoadingCategories } = useCategories();
+  const { data: tags = [], isLoading: isLoadingTags } = useTags();
   const { user } = useAuth();
 
   const handleSelectTag = (tag: string) => {
@@ -36,15 +37,15 @@ const Index = () => {
       server.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  if (isLoading) {
+  if (isLoadingServers || isLoadingCategories || isLoadingTags) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="spinner"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-mcp-purple"></div>
       </div>
     );
   }
 
-  if (error) {
+  if (serversError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h2 className="text-xl font-bold text-red-500">Error loading servers</h2>
@@ -85,10 +86,10 @@ const Index = () => {
               onSelectTag={handleSelectTag} 
             />
             
-            {servers.length === 0 && !isLoading && (
+            {servers.length === 0 && !isLoadingServers && (
               <div className="text-center py-10">
                 <h3 className="text-lg font-medium">No Servers Found</h3>
-                <p className="text-gray-500 mt-2">It looks like your Firestore database is empty.</p>
+                <p className="text-gray-500 mt-2">There are no servers in the database. Let's add some!</p>
               </div>
             )}
             
