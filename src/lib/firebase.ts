@@ -1,52 +1,99 @@
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, doc, setDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 import { MCPServer } from './types';
 
+// Use dummy values for Firebase config to prevent authentication errors
+// In a real app, you would use environment variables
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  apiKey: "demo-mode-key",
+  authDomain: "demo-mode.firebaseapp.com",
+  projectId: "demo-mode",
+  storageBucket: "demo-mode.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000000:web:0000000000000000000000"
 };
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-export const auth = getAuth(app);
 
-// Function to seed or update server data
-export const seedServer = async (server: Omit<MCPServer, 'id'>, id?: string) => {
-  try {
-    if (id) {
-      // Update existing server
-      await setDoc(doc(db, 'servers', id), server);
-      return id;
-    } else {
-      // Add new server
-      const docRef = await addDoc(collection(db, 'servers'), server);
-      return docRef.id;
-    }
-  } catch (error) {
-    console.error('Error adding/updating server:', error);
-    throw error;
+// Mock data to use instead of Firestore in demo mode
+export const mockServers: MCPServer[] = [
+  {
+    id: "1",
+    name: "ModelContextProtocol.io",
+    description: "The official MCP server for Model Context Protocol",
+    url: "https://modelcontextprotocol.io",
+    stars: 35867,
+    tags: ["official", "featured"],
+    owner: "ModelContextProtocol",
+    imageUrl: "/placeholder.svg",
+    featured: true
+  },
+  {
+    id: "2",
+    name: "MCPServers.org",
+    description: "A collection of MCP servers for various use cases",
+    url: "https://mcpservers.org",
+    stars: 12450,
+    tags: ["collection", "featured"],
+    owner: "MCP Community",
+    imageUrl: "/placeholder.svg",
+    featured: true
+  },
+  {
+    id: "3",
+    name: "MCP.so",
+    description: "Featured MCP servers with detailed information",
+    url: "https://mcp.so",
+    stars: 18932,
+    tags: ["featured", "curated"],
+    owner: "MCP.so Team",
+    imageUrl: "/placeholder.svg",
+    featured: true
+  },
+  {
+    id: "4",
+    name: "LLM Context Server",
+    description: "Specialized MCP server for LLM context management",
+    url: "https://llmcontextserver.net",
+    stars: 5672,
+    tags: ["llm", "ai"],
+    owner: "AI Research Group",
+    imageUrl: "/placeholder.svg",
+    featured: false
+  },
+  {
+    id: "5",
+    name: "ContextFlow",
+    description: "Streaming context protocol implementation",
+    url: "https://contextflow.dev",
+    stars: 8743,
+    tags: ["streaming", "real-time"],
+    owner: "FlowTeam",
+    imageUrl: "/placeholder.svg",
+    featured: false
+  },
+  {
+    id: "6",
+    name: "Enterprise MCP",
+    description: "Enterprise-grade MCP server with security features",
+    url: "https://enterprisemcp.com",
+    stars: 9245,
+    tags: ["enterprise", "security"],
+    owner: "Enterprise Solutions",
+    imageUrl: "/placeholder.svg",
+    featured: false
+  },
+  {
+    id: "7",
+    name: "Open Context Hub",
+    description: "Open source implementation of the Model Context Protocol",
+    url: "https://opencontexthub.org",
+    stars: 14532,
+    tags: ["open-source", "community"],
+    owner: "Open Context Community",
+    imageUrl: "/placeholder.svg",
+    featured: false
   }
-};
-
-// Function to seed multiple servers at once
-export const seedServers = async (servers: Omit<MCPServer, 'id'>[]) => {
-  const results = [];
-  
-  for (const server of servers) {
-    try {
-      const id = await seedServer(server);
-      results.push(id);
-    } catch (error) {
-      console.error('Error seeding server:', server.name, error);
-    }
-  }
-  
-  return results;
-};
+];

@@ -1,13 +1,11 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged, 
-  User 
-} from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import React, { createContext, useContext, useState } from 'react';
+
+interface User {
+  uid: string;
+  email: string;
+  displayName: string;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -21,24 +19,26 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    // Demo mode authentication - just set a mock user
+    setUser({
+      uid: '1',
+      email: email,
+      displayName: email.split('@')[0]
+    });
   };
 
   const signUp = async (email: string, password: string) => {
-    await createUserWithEmailAndPassword(auth, email, password);
+    // Demo mode authentication - just set a mock user
+    setUser({
+      uid: '1',
+      email: email,
+      displayName: email.split('@')[0]
+    });
   };
 
   const logout = async () => {
-    await signOut(auth);
+    setUser(null);
   };
 
   return (

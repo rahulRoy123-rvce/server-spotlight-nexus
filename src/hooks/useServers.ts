@@ -1,31 +1,35 @@
 
 import { useQuery } from '@tanstack/react-query';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { mockServers } from '@/lib/firebase';
 import { MCPServer } from '@/lib/types';
 
-const fetchServers = async (category?: string, tags?: string[]) => {
-  try {
-    const serversRef = collection(db, 'servers');
-    let q = query(serversRef);
+const fetchServers = async (category?: string, tags?: string[]): Promise<MCPServer[]> => {
+  // Simulate a small delay to mimic network request
+  await new Promise(resolve => setTimeout(resolve, 500));
 
-    if (category && category !== 'all') {
-      q = query(q, where('category', '==', category));
+  let filteredServers = [...mockServers];
+
+  // Filter by category
+  if (category && category !== 'all') {
+    if (category === 'featured') {
+      filteredServers = filteredServers.filter(server => server.featured);
+    } else if (category === 'community') {
+      filteredServers = filteredServers.filter(server => 
+        server.tags.includes('community') || server.tags.includes('open-source'));
+    } else if (category === 'enterprise') {
+      filteredServers = filteredServers.filter(server => 
+        server.tags.includes('enterprise') || server.tags.includes('security'));
     }
-
-    if (tags && tags.length > 0) {
-      q = query(q, where('tags', 'array-contains-any', tags));
-    }
-
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    } as MCPServer));
-  } catch (error) {
-    console.error('Error fetching servers:', error);
-    throw error;
   }
+
+  // Filter by tags
+  if (tags && tags.length > 0) {
+    filteredServers = filteredServers.filter(server => 
+      tags.some(tag => server.tags.includes(tag))
+    );
+  }
+
+  return filteredServers;
 };
 
 export const useServers = (category?: string, tags?: string[]) => {
