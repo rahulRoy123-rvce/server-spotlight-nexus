@@ -55,14 +55,20 @@ const Index = () => {
       if (selectedCategory === 'featured') {
         filtered = filtered.filter((server) => server.featured);
       } else {
+        const categoryFilters: { [key: string]: string[] } = {
+          'developer-tools': ['developer-tools', 'code', 'code-execution', 'developer'],
+          'data-platforms': ['data', 'data-platforms', 'data-science-tools', 'database', 'databases'],
+          'ai-ml': ['ai', 'coding-agents', 'memory'],
+          'cloud-infra': ['cloud', 'cloud-platforms', 'filesystem', 'file-systems'],
+          'browser-web': ['browser', 'browser-automation', 'art-&-culture', 'art'],
+          'integration': ['communication', 'customer-data', 'customer-data-platforms', 'other-tools-and-integrations'],
+          'system': ['embedded', 'embedded-system', 'cli', 'command-line'],
+          'research': ['research', 'culture']
+        };
+
+        const relevantTags = categoryFilters[selectedCategory] || [];
         filtered = filtered.filter((server) =>
-          server.tags.includes(selectedCategory) ||
-          (selectedCategory === 'community' &&
-            (server.tags.includes('community') || server.tags.includes('open-source'))) ||
-          (selectedCategory === 'ai' &&
-            (server.tags.includes('ai') || server.tags.includes('llm'))) ||
-          (selectedCategory === 'research' &&
-            (server.tags.includes('research') || server.tags.includes('academic')))
+          server.tags.some(tag => relevantTags.includes(tag))
         );
       }
     }
