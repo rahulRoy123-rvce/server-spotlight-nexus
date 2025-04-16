@@ -1,6 +1,6 @@
 import React from 'react';
 import { MCPServer } from '@/lib/types';
-import { Star, ExternalLink } from 'lucide-react';
+import { Star, ExternalLink, Github } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface ServerCardProps {
@@ -9,47 +9,60 @@ interface ServerCardProps {
 
 const ServerCard: React.FC<ServerCardProps> = ({ server }) => {
   return (
-    <div className="border border-border rounded-lg bg-card text-card-foreground overflow-hidden hover:shadow-md transition-shadow">
-      <div className="h-40 bg-muted relative">
-        <img 
-          src={server.imageUrl} 
-          alt={server.name} 
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = '/placeholder.svg';
-          }}
-        />
-        {server.featured && (
-          <span className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded-md text-xs font-medium">
-            Featured
-          </span>
-        )}
-      </div>
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold truncate text-foreground">{server.name}</h3>
-          <div className="flex items-center text-yellow-500">
+    <div className="group relative border border-border/50 rounded-xl bg-background/50 backdrop-blur-sm text-card-foreground overflow-hidden hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:border-primary/20">
+      <div className="p-6 flex flex-col gap-4">
+        {/* Header Section */}
+        <div className="flex items-start justify-between">
+          <div className="space-y-1 flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-foreground truncate pr-4">
+              {server.name}
+            </h3>
+            <p className="text-sm text-muted-foreground line-clamp-2">
+              {server.description}
+            </p>
+          </div>
+          <div className="flex items-center space-x-1 text-amber-500 dark:text-amber-400">
             <Star className="h-4 w-4 fill-current" />
-            <span className="ml-1 text-sm text-muted-foreground">{server.stars.toLocaleString()}</span>
+            <span className="text-sm font-medium">{server.stars.toLocaleString()}</span>
           </div>
         </div>
-        <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{server.description}</p>
-        <div className="mb-3 flex flex-wrap gap-1">
+
+        {/* Tags Section */}
+        <div className="flex flex-wrap gap-1.5">
+          {server.featured && (
+            <Badge variant="default" className="bg-primary/15 text-primary border-primary/10 hover:bg-primary/20">
+              Featured
+            </Badge>
+          )}
           {server.tags.map((tag) => (
-            <Badge key={tag} variant="outline" className="text-xs">
+            <Badge 
+              key={tag} 
+              variant="secondary" 
+              className="bg-secondary/50 text-secondary-foreground hover:bg-secondary/60"
+            >
               {tag}
             </Badge>
           ))}
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-muted-foreground">By {server.owner}</span>
+
+        {/* Footer Section */}
+        <div className="flex items-center justify-between pt-2 mt-auto border-t border-border/50">
+          <a
+            href={`https://github.com/${server.owner}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Github className="h-3.5 w-3.5 mr-1" />
+            {server.owner}
+          </a>
           <a
             href={server.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:text-primary/90 flex items-center text-sm font-medium"
+            className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            Visit <ExternalLink className="ml-1 h-3 w-3" />
+            Visit <ExternalLink className="ml-1 h-3.5 w-3.5" />
           </a>
         </div>
       </div>
