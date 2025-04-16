@@ -57,15 +57,28 @@ const Index = () => {
       if (selectedCategory === 'featured') {
         filtered = filtered.filter((server) => server.featured);
       } else {
-        filtered = filtered.filter((server) =>
-          server.tags.includes(selectedCategory) ||
-          (selectedCategory === 'community' &&
-            (server.tags.includes('community') || server.tags.includes('open-source'))) ||
-          (selectedCategory === 'ai' &&
-            (server.tags.includes('ai') || server.tags.includes('llm'))) ||
-          (selectedCategory === 'research' &&
-            (server.tags.includes('research') || server.tags.includes('academic')))
-        );
+        filtered = filtered.filter((server) => {
+          switch (selectedCategory) {
+            case 'ai-ml':
+              return server.tags.some(tag => ['ai', 'coding-agents', 'memory'].includes(tag));
+            case 'browser-web':
+              return server.tags.some(tag => ['browser', 'browser-automation', 'art', 'art-&-culture'].includes(tag));
+            case 'cloud-infra':
+              return server.tags.some(tag => ['cloud', 'cloud-platforms', 'filesystem', 'file-systems'].includes(tag));
+            case 'data-platforms':
+              return server.tags.some(tag => ['data', 'data-platforms', 'data-science-tools', 'database', 'databases'].includes(tag));
+            case 'developer-tools':
+              return server.tags.some(tag => ['developer-tools', 'code', 'code-execution', 'developer'].includes(tag));
+            case 'integration':
+              return server.tags.some(tag => ['communication', 'customer-data', 'customer-data-platforms', 'other-tools-and-integrations'].includes(tag));
+            case 'research':
+              return server.tags.some(tag => ['research', 'culture'].includes(tag));
+            case 'system':
+              return server.tags.some(tag => ['embedded', 'embedded-system', 'cli', 'command-line'].includes(tag));
+            default:
+              return server.tags.includes(selectedCategory);
+          }
+        });
       }
     }
 
