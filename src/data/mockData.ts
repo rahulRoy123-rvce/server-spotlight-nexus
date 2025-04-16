@@ -3524,17 +3524,17 @@ export const servers: MCPServer[] = [
 ];
 
 export const categories: Category[] = [
+  // Primary categories
   { id: 'all', name: 'All Servers', count: servers.length, order: 1 },
   { id: 'featured', name: 'Featured', count: servers.filter(s => s.featured).length, order: 2 },
   
-  // AI & Machine Learning
+  // Other categories in alphabetical order
   { id: 'ai-ml', name: 'AI & ML', count: servers.filter(s => 
     s.tags.includes('ai') || 
     s.tags.includes('coding-agents') ||
     s.tags.includes('memory')
   ).length, order: 3 },
   
-  // Browser & Web
   { id: 'browser-web', name: 'Browser & Web', count: servers.filter(s => 
     s.tags.includes('browser') || 
     s.tags.includes('browser-automation') ||
@@ -3542,7 +3542,6 @@ export const categories: Category[] = [
     s.tags.includes('art')
   ).length, order: 4 },
   
-  // Cloud & Infrastructure
   { id: 'cloud-infra', name: 'Cloud & Infrastructure', count: servers.filter(s => 
     s.tags.includes('cloud') || 
     s.tags.includes('cloud-platforms') ||
@@ -3550,7 +3549,6 @@ export const categories: Category[] = [
     s.tags.includes('file-systems')
   ).length, order: 5 },
   
-  // Data & Analytics
   { id: 'data-platforms', name: 'Data & Analytics', count: servers.filter(s => 
     s.tags.includes('data') || 
     s.tags.includes('data-platforms') || 
@@ -3559,7 +3557,6 @@ export const categories: Category[] = [
     s.tags.includes('databases')
   ).length, order: 6 },
   
-  // Development & Tools
   { id: 'developer-tools', name: 'Developer Tools', count: servers.filter(s => 
     s.tags.includes('developer-tools') || 
     s.tags.includes('code') || 
@@ -3567,7 +3564,6 @@ export const categories: Category[] = [
     s.tags.includes('developer')
   ).length, order: 7 },
   
-  // Integration & Communication
   { id: 'integration', name: 'Integration & APIs', count: servers.filter(s => 
     s.tags.includes('communication') || 
     s.tags.includes('customer-data') ||
@@ -3575,13 +3571,11 @@ export const categories: Category[] = [
     s.tags.includes('other-tools-and-integrations')
   ).length, order: 8 },
   
-  // Research & Academic
   { id: 'research', name: 'Research & Academic', count: servers.filter(s => 
     s.tags.includes('research') || 
     s.tags.includes('culture')
   ).length, order: 9 },
   
-  // System & Embedded
   { id: 'system', name: 'System & Embedded', count: servers.filter(s => 
     s.tags.includes('embedded') || 
     s.tags.includes('embedded-system') ||
