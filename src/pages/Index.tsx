@@ -25,7 +25,9 @@ const Index = () => {
       setServers(serversData);
 
       const categoriesSnapshot = await getDocs(collection(db, 'categories'));
-      const categoriesData = categoriesSnapshot.docs.map(doc => doc.data() as Category);
+      const categoriesData = categoriesSnapshot.docs
+        .map(doc => doc.data() as Category)
+        .sort((a, b) => a.order - b.order);
       setCategories(categoriesData);
 
       // Compute unique tags
