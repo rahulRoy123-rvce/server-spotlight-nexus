@@ -3524,16 +3524,31 @@ export const servers: MCPServer[] = [
 ];
 
 export const categories: Category[] = [
-  { id: 'featured', name: 'Featured', count: servers.filter(s => s.featured).length },
-  { id: 'all', name: 'All Servers', count: servers.length },
+  { id: 'all', name: 'All Servers', count: servers.length, order: 1 },
+  { id: 'featured', name: 'Featured', count: servers.filter(s => s.featured).length, order: 2 },
   
-  // Development & Tools
-  { id: 'developer-tools', name: 'Developer Tools', count: servers.filter(s => 
-    s.tags.includes('developer-tools') || 
-    s.tags.includes('code') || 
-    s.tags.includes('code-execution') ||
-    s.tags.includes('developer')
-  ).length },
+  // AI & Machine Learning
+  { id: 'ai-ml', name: 'AI & ML', count: servers.filter(s => 
+    s.tags.includes('ai') || 
+    s.tags.includes('coding-agents') ||
+    s.tags.includes('memory')
+  ).length, order: 3 },
+  
+  // Browser & Web
+  { id: 'browser-web', name: 'Browser & Web', count: servers.filter(s => 
+    s.tags.includes('browser') || 
+    s.tags.includes('browser-automation') ||
+    s.tags.includes('art-&-culture') ||
+    s.tags.includes('art')
+  ).length, order: 4 },
+  
+  // Cloud & Infrastructure
+  { id: 'cloud-infra', name: 'Cloud & Infrastructure', count: servers.filter(s => 
+    s.tags.includes('cloud') || 
+    s.tags.includes('cloud-platforms') ||
+    s.tags.includes('filesystem') ||
+    s.tags.includes('file-systems')
+  ).length, order: 5 },
   
   // Data & Analytics
   { id: 'data-platforms', name: 'Data & Analytics', count: servers.filter(s => 
@@ -3542,30 +3557,15 @@ export const categories: Category[] = [
     s.tags.includes('data-science-tools') ||
     s.tags.includes('database') ||
     s.tags.includes('databases')
-  ).length },
+  ).length, order: 6 },
   
-  // AI & Machine Learning
-  { id: 'ai-ml', name: 'AI & ML', count: servers.filter(s => 
-    s.tags.includes('ai') || 
-    s.tags.includes('coding-agents') ||
-    s.tags.includes('memory')
-  ).length },
-  
-  // Cloud & Infrastructure
-  { id: 'cloud-infra', name: 'Cloud & Infrastructure', count: servers.filter(s => 
-    s.tags.includes('cloud') || 
-    s.tags.includes('cloud-platforms') ||
-    s.tags.includes('filesystem') ||
-    s.tags.includes('file-systems')
-  ).length },
-  
-  // Browser & Web
-  { id: 'browser-web', name: 'Browser & Web', count: servers.filter(s => 
-    s.tags.includes('browser') || 
-    s.tags.includes('browser-automation') ||
-    s.tags.includes('art-&-culture') ||
-    s.tags.includes('art')
-  ).length },
+  // Development & Tools
+  { id: 'developer-tools', name: 'Developer Tools', count: servers.filter(s => 
+    s.tags.includes('developer-tools') || 
+    s.tags.includes('code') || 
+    s.tags.includes('code-execution') ||
+    s.tags.includes('developer')
+  ).length, order: 7 },
   
   // Integration & Communication
   { id: 'integration', name: 'Integration & APIs', count: servers.filter(s => 
@@ -3573,7 +3573,13 @@ export const categories: Category[] = [
     s.tags.includes('customer-data') ||
     s.tags.includes('customer-data-platforms') ||
     s.tags.includes('other-tools-and-integrations')
-  ).length },
+  ).length, order: 8 },
+  
+  // Research & Academic
+  { id: 'research', name: 'Research & Academic', count: servers.filter(s => 
+    s.tags.includes('research') || 
+    s.tags.includes('culture')
+  ).length, order: 9 },
   
   // System & Embedded
   { id: 'system', name: 'System & Embedded', count: servers.filter(s => 
@@ -3581,13 +3587,7 @@ export const categories: Category[] = [
     s.tags.includes('embedded-system') ||
     s.tags.includes('cli') ||
     s.tags.includes('command-line')
-  ).length },
-  
-  // Research & Academic
-  { id: 'research', name: 'Research & Academic', count: servers.filter(s => 
-    s.tags.includes('research') || 
-    s.tags.includes('culture')
-  ).length }
+  ).length, order: 10 }
 ];
 
 // Get all unique tags from servers

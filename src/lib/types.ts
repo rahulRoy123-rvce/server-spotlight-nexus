@@ -1,4 +1,3 @@
-
 export interface MCPServer {
   id: string;
   name: string;
@@ -15,4 +14,5 @@ export interface Category {
   id: string;
   name: string;
   count: number;
+  order: number;
 }
