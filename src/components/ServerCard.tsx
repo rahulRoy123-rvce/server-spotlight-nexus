@@ -9,12 +9,16 @@ interface ServerCardProps {
 
 const ServerCard: React.FC<ServerCardProps> = ({ server }) => {
   return (
-    <div className="group relative border border-border/50 rounded-xl bg-background/50 backdrop-blur-sm text-card-foreground overflow-hidden hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:border-primary/20">
-      <div className="p-6 flex flex-col gap-4">
+    <div className="group relative rounded-xl bg-background/50 backdrop-blur-sm text-card-foreground overflow-hidden transition-all duration-300">
+      {/* Gradient Border */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+      
+      {/* Card Content */}
+      <div className="relative p-6 flex flex-col gap-4 border-2 border-border/80 rounded-xl bg-background/50 backdrop-blur-sm group-hover:border-primary/50 group-hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-300">
         {/* Header Section */}
         <div className="flex items-start justify-between">
           <div className="space-y-1 flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-foreground truncate pr-4">
+            <h3 className="text-lg font-semibold text-foreground truncate pr-4 group-hover:text-primary transition-colors duration-300">
               {server.name}
             </h3>
             <p className="text-sm text-muted-foreground line-clamp-2">
@@ -46,7 +50,7 @@ const ServerCard: React.FC<ServerCardProps> = ({ server }) => {
         </div>
 
         {/* Footer Section */}
-        <div className="flex items-center justify-between pt-2 mt-auto border-t border-border/50">
+        <div className="flex items-center justify-between pt-2 mt-auto border-t-2 border-border/80 group-hover:border-primary/30 transition-colors duration-300">
           <a
             href={`https://github.com/${server.owner}`}
             target="_blank"
