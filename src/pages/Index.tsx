@@ -5,9 +5,20 @@ import ServerCard from '@/components/ServerCard';
 import TagFilter from '@/components/TagFilter';
 import MobileFilters from '@/components/MobileFilters';
 import NoResults from '@/components/NoResults';
+import AIAgent from '@/components/AIAgent';
 import { MCPServer, Category } from '@/lib/types';
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+const CARDS_PER_PAGE = 32;
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -17,6 +28,7 @@ const Index = () => {
   const [servers, setServers] = useState<MCPServer[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,6 +101,7 @@ const Index = () => {
     }
 
     setFilteredServers(filtered);
+    setCurrentPage(1); // Reset to first page when filters change
   }, [searchQuery, selectedCategory, selectedTags, servers]);
 
   const handleSelectTag = (tag: string) => {
@@ -98,6 +111,12 @@ const Index = () => {
         : [...prev, tag]
     );
   };
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredServers.length / CARDS_PER_PAGE);
+  const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
+  const endIndex = startIndex + CARDS_PER_PAGE;
+  const currentServers = filteredServers.slice(startIndex, endIndex);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -110,7 +129,7 @@ const Index = () => {
           onSelectCategory={setSelectedCategory} 
         />
         
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 p-4 md:p-6 pb-20">
           <div className="container mx-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-foreground">
@@ -129,18 +148,52 @@ const Index = () => {
               onSelectTag={handleSelectTag} 
             />
             
-            {filteredServers.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {filteredServers.map((server) => (
-                  <ServerCard key={server.id} server={server} />
-                ))}
-              </div>
+            {currentServers.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {currentServers.map((server) => (
+                    <ServerCard key={server.id} server={server} />
+                  ))}
+                </div>
+                {totalPages > 1 && (
+                  <div className="mt-8">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious 
+                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(page)}
+                              isActive={currentPage === page}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                          <PaginationNext
+                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                            className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </>
             ) : (
               <NoResults />
             )}
           </div>
         </main>
       </div>
+      
+      <AIAgent />
     </div>
   );
 };
